@@ -25,6 +25,6 @@
 		<?php } ?>
 	</tbody>
 </table>
- 
+ <h3>1 USD = <?php echo $rate['usd'];?> RON</h3> 
 </body>
 </html>
