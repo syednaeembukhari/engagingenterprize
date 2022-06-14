@@ -1,6 +1,8 @@
 <html>
 <head></head>
 <body>
+<?php $this->load->view('admin/menu');?>
+<h3>Welcome to the admin Dashboard</h3>
 <table>
 	<thead></thead>
 	<tbody>
@@ -25,6 +27,6 @@
 		<?php } ?>
 	</tbody>
 </table>
- 
+
 </body>
 </html>

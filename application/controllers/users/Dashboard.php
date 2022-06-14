@@ -18,10 +18,14 @@ class Dashboard extends CI_Controller {
 	 * map to /index.php/welcome/<method_name>
 	 * @see https://codeigniter.com/userguide3/general/urls.html
 	 */
-	var $data; 
+	private $data; 
 	public function __construct() 
 	{
 		parent::__construct();
+		if( !$this->session->userdata('islogin') || $this->session->userdata('usertype')!='customer')
+		{
+			redirect ('login',true);
+		}
 
 	}
 
@@ -37,38 +41,10 @@ class Dashboard extends CI_Controller {
 		$this->data['products']['unusedProducts']=$this->ProductsModel->getUnusedProducts();
 		$this->data['products']['attachedProducts']=$this->ProductsModel->getAttachedProductsCount();
 
-		$this->data['rate']['usd']=$this->USDtoRONconvertor(1);
+		//$this->data['rate']['usd']=$this->USDtoRONconvertor(1);
 
-		$this->load->view('dashboard',$this->data);
+		$this->load->view('user/dashboard',$this->data);
 	}
 
-	private function USDtoRONconvertor($amt)
-	{
-		$curl = curl_init();
 
-		curl_setopt_array($curl, array(
-		  CURLOPT_URL => "https://api.apilayer.com/exchangerates_data/convert?to=RON&from=USD&amount=$amt",
-		  CURLOPT_HTTPHEADER => array(
-		    "Content-Type: text/plain",
-		    "apikey: fd3mkXUs5DztOFNaat9G3eBhFnTx6Jdw"
-		  ),
-		  CURLOPT_RETURNTRANSFER => true,	
-		  CURLOPT_ENCODING => "",
-		  CURLOPT_MAXREDIRS => 10,
-		  CURLOPT_TIMEOUT => 0,
-		  CURLOPT_FOLLOWLOCATION => true,
-		  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-		  CURLOPT_CUSTOMREQUEST => "GET"
-		));
-
-		$response = curl_exec($curl);
-
-		curl_close($curl);
-		$res=json_decode($response);
-		if($res->success)
-		{
-			return $res->result;
-		}
-		return $response;
-	}
 }
