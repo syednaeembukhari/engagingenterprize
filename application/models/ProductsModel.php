@@ -14,6 +14,12 @@ class ProductsModel extends CI_Model {
             $this->db->where('status',$status);
         return $this->db->get('products');
     }
+    function getProduct($pid)
+    {
+        
+        $this->db->where('pid',$pid);
+        return $this->db->get('products')->row();
+    }
     function getUnusedProducts()
     {
          
@@ -29,6 +35,26 @@ class ProductsModel extends CI_Model {
             INNER JOIN products ON users_products.pid=products.pid WHERE products.status='Active'") ;
         
         return $result;
+    }
+    function add($data)
+    {
+        $this->db->insert('products',$data);
+        return $this->db->insert_id();
+    }
+    function update($data,$pid)
+    {   
+        $this->db->where('pid',$pid);
+        foreach($data as $i=>$d){
+            $this->db->set($i,$d);
+        }
+        $this->db->update('products');
+        return 1;
+    }
+    function delete($pid)
+    {
+        $this->db->where('pid',$pid);
+        $this->db->delete('products');
+        return 1;
     }
 
 }// end of the class productmodel
