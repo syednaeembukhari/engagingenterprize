@@ -22,7 +22,7 @@ class Dashboard extends CI_Controller {
 	public function __construct() 
 	{
 		parent::__construct();
-		if( !$this->session->userdata('islogin') || $this->session->userdata('usertype')!='customer')
+		if( !$this->session->userdata('islogin') || $this->session->userdata('usertype')!='Customer')
 		{
 			redirect ('login',true);
 		}
